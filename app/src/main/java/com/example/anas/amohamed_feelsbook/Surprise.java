@@ -6,24 +6,25 @@ import java.util.Date;
  * Created by anas on 9/28/18.
  */
 
-public class Sad extends Emotion {
+public class Surprise extends Emotion {
     private static int count = 0;
-    public Sad(Date date, String comment){
+    public Surprise(Date date, String comment){
         setDate(date);
         setComment(comment);
         count++;
     }
 
-    public Sad(String comment){
+    public Surprise(String comment){
         setComment(comment);
         count++;
     }
 
-    public Sad(){
+    public Surprise(){
         count++;
     }
 
     public String getFeel(){
-        return "Sad";
+        return "Surprise";
     }
 }
+

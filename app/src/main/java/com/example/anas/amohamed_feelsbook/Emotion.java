@@ -9,7 +9,11 @@ import java.util.Date;
 public abstract class Emotion {
     public Date date = new Date();
     public String comment = "";
-    protected String feel;
+    private int counter;
+
+    public int getCount(){
+        return counter;
+    }
 
     public void setDate(Date date){
         this.date = date;
@@ -27,6 +31,6 @@ public abstract class Emotion {
         return this.comment;
     }
 
-    public abstract void setFeel();
+    public abstract String getFeel();
 
 }
