@@ -11,12 +11,10 @@ public class Anger extends Emotion {
     public Anger(Date date, String comment){
         setDate(date);
         setComment(comment);
-        count++;
     }
 
     public Anger(String comment){
         setComment(comment);
-        count++;
     }
 
     public Anger(){

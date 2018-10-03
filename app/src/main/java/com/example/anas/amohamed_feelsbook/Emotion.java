@@ -8,11 +8,19 @@ import java.util.Date;
 
 public abstract class Emotion {
     public Date date = new Date();
-    public String comment = "";
-    private int counter;
+    private String comment = "";
+    private static int counter;
 
     public int getCount(){
         return counter;
+    }
+
+    public void incrementCount(){
+        counter++;
+    }
+
+    public void decrementCount(){
+        counter = counter - 1;
     }
 
     public void setDate(Date date){
