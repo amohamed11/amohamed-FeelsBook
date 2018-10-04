@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
@@ -30,11 +31,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import static android.provider.Telephony.Mms.Part.FILENAME;
+
 public class FeelsBookActivity extends Activity implements View.OnClickListener {
     // https://github.com/amohamed11/lonelyTwitter/blob/f15tuesday/app/src/main/java/ca/ualberta/cs/lonelytwitter/LonelyTwitterActivity.java
-//    private static final String FILENAME = "file.sav";
+    private static final String FILENAME = "save";
     protected ListView listView;
-    protected ArrayList<Emotion> emotionList;
+    public ArrayList<Emotion> emotionList = new ArrayList<Emotion>();
     protected ArrayAdapter<Emotion> emotionAdapter;
     protected EditText editComment;
     protected String comment = "";
@@ -48,7 +51,6 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feels_book);
         stringCount = new ArrayList<String>();
-        listView = (ListView) findViewById(R.id.emotion_list);
         drawerView = (ListView) findViewById(R.id.count_bar);
 
         stringCount.add("Fear: 0");
@@ -58,15 +60,13 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
         stringCount.add("Sad: 0");
         stringCount.add("Surprised: 0");
 
-        emotionList = new ArrayList<Emotion>();
-        emotionAdapter = new ArrayAdapter<Emotion>(this, android.R.layout.simple_list_item_1, emotionList);
-        listView.setAdapter(emotionAdapter);
-
         drawerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, stringCount);
         drawerView.setAdapter(drawerAdapter);
 
+        listView = (ListView) findViewById(R.id.emotion_list);
 
-            // Get all the buttons
+
+        // Get all the buttons
         // https://stackoverflow.com/questions/25905086/multiple-buttons-onclicklistener-android
         Button fearButton = (Button) findViewById(R.id.fearButton);
         fearButton.setOnClickListener(this);
@@ -158,41 +158,41 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
         drawerAdapter.notifyDataSetChanged();
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        loadFromFile();
-//        emotionAdapter = new ArrayAdapter<Emotion>(this, android.R.layout.simple_list_item_1, emotionList);
-//        listView.setAdapter(emotionAdapter);
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loadFromFile();
+        emotionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, emotionList);
+        listView.setAdapter(emotionAdapter);
+    }
 
 
-//    private void loadFromFile() {
-//        try {
-//            FileInputStream fis = openFileInput(FILENAME);
-//            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-//            Gson gson = new Gson();
-//            Type listType = new TypeToken<ArrayList<Emotion>>() {}.getType();
-//            emotionList = gson.fromJson(in, listType);
-//        } catch (FileNotFoundException e) {
-//            emotionList = new ArrayList<Emotion>();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private void saveInFile() {
-//        try {
-//            FileOutputStream fos = openFileOutput(FILENAME, 0);
-//            OutputStreamWriter writer = new OutputStreamWriter(fos);
-//            Gson gson = new Gson();
-//            gson.toJson(emotionList, writer);
-//            writer.flush();
-//            fos.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private void loadFromFile() {
+        try {
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+            Gson gson = new GsonBuilder().create();
+            Type listType =  new TypeToken<ArrayList<Emotion>>() {}.getType();
+            emotionList = gson.fromJson(in, listType);
+        } catch (FileNotFoundException e) {
+            emotionList = new ArrayList<Emotion>();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveInFile() {
+        try {
+            FileOutputStream fos = openFileOutput(FILENAME, MODE_PRIVATE);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson = new GsonBuilder().create();
+            gson.toJson(emotionList, writer);
+            writer.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -15,6 +15,10 @@ public class EmotionList {
         notifyAll();
     }
 
+    public ArrayList<Emotion> getList(){
+        return emotionList;
+    }
+
     public int getEmotionCount(Emotion emotion){
         return emotion.getCount();
     }
