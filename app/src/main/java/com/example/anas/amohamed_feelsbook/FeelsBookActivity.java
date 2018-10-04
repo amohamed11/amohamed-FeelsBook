@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,9 +23,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 public class FeelsBookActivity extends Activity implements View.OnClickListener {
@@ -36,14 +39,34 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
     protected EditText editComment;
     protected String comment = "";
 
+    protected ListView drawerView;
+    protected ArrayList<String> stringCount;
+    protected ArrayAdapter<String> drawerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feels_book);
-        emotionList = new ArrayList<Emotion>();
+        stringCount = new ArrayList<String>();
         listView = (ListView) findViewById(R.id.emotion_list);
+        drawerView = (ListView) findViewById(R.id.count_bar);
 
-        // Get all the buttons
+        stringCount.add("Fear: 0");
+        stringCount.add("Joy: 0");
+        stringCount.add("Love: 0");
+        stringCount.add("Anger: 0");
+        stringCount.add("Sad: 0");
+        stringCount.add("Surprised: 0");
+
+        emotionList = new ArrayList<Emotion>();
+        emotionAdapter = new ArrayAdapter<Emotion>(this, android.R.layout.simple_list_item_1, emotionList);
+        listView.setAdapter(emotionAdapter);
+
+        drawerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, stringCount);
+        drawerView.setAdapter(drawerAdapter);
+
+
+            // Get all the buttons
         // https://stackoverflow.com/questions/25905086/multiple-buttons-onclicklistener-android
         Button fearButton = (Button) findViewById(R.id.fearButton);
         fearButton.setOnClickListener(this);
@@ -60,13 +83,14 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
 
         editComment = (EditText) findViewById(R.id.editComment);
 
+    }
 
-        }
     @Override
     public void onClick(View v){
         comment = editComment.getText().toString();
         editComment.getText().clear();
         switch (v.getId()){
+
             case R.id.fearButton:
                 Fear fear = new Fear();
                 if (!comment.matches("")){
@@ -74,8 +98,9 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
                 }
                 emotionList.add(fear);
                 fear.incrementCount();
-                emotionAdapter.notifyDataSetChanged();
+                stringCount.set(0, "Fear: " + Integer.toString(fear.getCount()));
                 break;
+
             case R.id.joyButton:
                 Joy joy = new Joy();
                 if (!comment.matches("")){
@@ -83,8 +108,9 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
                 }
                 emotionList.add(joy);
                 joy.incrementCount();
-                emotionAdapter.notifyDataSetChanged();
+                stringCount.set(1, "Joy: " + Integer.toString(joy.getCount()) );
                 break;
+
             case R.id.loveButton:
                 Love love = new Love();
                 if (!comment.matches("")){
@@ -92,8 +118,9 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
                 }
                 emotionList.add(love);
                 love.incrementCount();
-                emotionAdapter.notifyDataSetChanged();
+                stringCount.set(2, "Love: " + Integer.toString(love.getCount()) );
                 break;
+
             case R.id.angerButton:
                 Anger anger= new Anger();
                 if (!comment.matches("")){
@@ -101,8 +128,9 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
                 }
                 emotionList.add(anger);
                 anger.incrementCount();
-                emotionAdapter.notifyDataSetChanged();
+                stringCount.set(3, "Anger: " + Integer.toString(anger.getCount()) );
                 break;
+
             case R.id.sadButton:
                 Sad sad= new Sad();
                 if (!comment.matches("")){
@@ -110,8 +138,9 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
                 }
                 emotionList.add(sad);
                 sad.incrementCount();
-                emotionAdapter.notifyDataSetChanged();
+                stringCount.set(4, "Sad: " + Integer.toString(sad.getCount()) );
                 break;
+
             case R.id.surpriseButton:
                 Surprise surprise= new Surprise();
                 if (!comment.matches("")){
@@ -119,34 +148,36 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
                 }
                 emotionList.add(surprise);
                 surprise.incrementCount();
-                emotionAdapter.notifyDataSetChanged();
+                stringCount.set(5, "Surprise: " + Integer.toString(surprise.getCount()));
                 break;
 
             default:
                 break;
         }
-
+        emotionAdapter.notifyDataSetChanged();
+        drawerAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        emotionAdapter = new ArrayAdapter<Emotion>(this, android.R.layout.simple_list_item_1, emotionList);
-        listView.setAdapter(emotionAdapter);
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        loadFromFile();
+//        emotionAdapter = new ArrayAdapter<Emotion>(this, android.R.layout.simple_list_item_1, emotionList);
+//        listView.setAdapter(emotionAdapter);
+//    }
+
 
 //    private void loadFromFile() {
 //        try {
 //            FileInputStream fis = openFileInput(FILENAME);
 //            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
 //            Gson gson = new Gson();
-//            // Taken from https://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/com/google/gson/Gson.html 2015-09-22
 //            Type listType = new TypeToken<ArrayList<Emotion>>() {}.getType();
 //            emotionList = gson.fromJson(in, listType);
 //        } catch (FileNotFoundException e) {
 //            emotionList = new ArrayList<Emotion>();
 //        } catch (IOException e) {
-//            throw new RuntimeException(e);
+//            e.printStackTrace();
 //        }
 //    }
 //
@@ -155,13 +186,13 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
 //            FileOutputStream fos = openFileOutput(FILENAME, 0);
 //            OutputStreamWriter writer = new OutputStreamWriter(fos);
 //            Gson gson = new Gson();
-//            gson.toJson(emotionList);
+//            gson.toJson(emotionList, writer);
 //            writer.flush();
 //            fos.close();
 //        } catch (FileNotFoundException e) {
-//            throw new RuntimeException(e);
+//            e.printStackTrace();
 //        } catch (IOException e) {
-//            throw new RuntimeException(e);
+//            e.printStackTrace();
 //        }
 //    }
 }

@@ -1,5 +1,5 @@
 **Citations:**
-Multiple documentation links specifically from: https://developer.android.com
+Various documentation pages from: https://developer.android.com
 
 All around references for application desgin and methodology
 https://github.com/joshua2ua/lonelyTwitter/blob/f15tuesday/app/src/main/java/ca/ualberta/cs/lonelytwitter/LonelyTwitterActivity.java
@@ -14,5 +14,12 @@ https://www.tutorialspoint.com/android/android_list_view.htm
 
 Emoticons from
 https://www.jemoticons.com/
+
+
+Drawers reference
+https://blog.teamtreehouse.com/add-navigation-drawer-android
+
+
+
 
 
