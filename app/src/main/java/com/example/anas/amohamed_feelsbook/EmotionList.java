@@ -12,6 +12,7 @@ public class EmotionList {
     public void add(Emotion emotion){
         emotionList.add(emotion);
         emotion.incrementCount();
+        notifyAll();
     }
 
     public int getEmotionCount(Emotion emotion){
@@ -22,6 +23,7 @@ public class EmotionList {
         emotionList.remove(index);
         Emotion e = emotionList.get(index);
         e.decrementCount();
+        notifyAll();
     }
 
 

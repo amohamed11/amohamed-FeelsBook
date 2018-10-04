@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class FeelsBookActivity extends AppCompatActivity implements View.OnClickListener {
     // https://github.com/amohamed11/lonelyTwitter/blob/f15tuesday/app/src/main/java/ca/ualberta/cs/lonelytwitter/LonelyTwitterActivity.java
@@ -17,6 +19,7 @@ public class FeelsBookActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feels_book);
+        ListView listView = new ListView();
 
         // Get all the buttons
         // https://stackoverflow.com/questions/25905086/multiple-buttons-onclicklistener-android

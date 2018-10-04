@@ -39,6 +39,11 @@ public abstract class Emotion {
         return this.comment;
     }
 
+    @Override
+    public String toString() {
+        return getFeel() + "\n" + comment + "\n" + date.toString();
+    }
+
     public abstract String getFeel();
 
 }
