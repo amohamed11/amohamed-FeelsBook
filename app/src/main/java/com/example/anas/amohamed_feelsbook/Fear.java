@@ -7,23 +7,20 @@ import java.util.Date;
  */
 
 public class Fear extends Emotion {
-    private int count = 0;
-    public Fear(Date date, String comment){
-        setDate(date);
-        setComment(comment);
+    private static int count;
+    public int getCount(){
+        return count;
+    }
+
+    public void incrementCount(){
         count++;
     }
 
-    public Fear(String comment){
-        setComment(comment);
-        count++;
-    }
-
-    public Fear(){
-        count++;
+    public void decrementCount(){
+        count--;
     }
 
     public String getFeel(){
-        return "Fear";
+        return "(⊙＿⊙) Fear";
     }
 }

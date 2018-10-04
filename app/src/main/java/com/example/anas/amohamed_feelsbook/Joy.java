@@ -7,24 +7,21 @@ import java.util.Date;
  */
 
 public class Joy extends Emotion {
-    private static int count = 0;
-    public Joy(Date date, String comment){
-        setDate(date);
-        setComment(comment);
+    private static int count;
+    public int getCount(){
+        return count;
+    }
+
+    public void incrementCount(){
         count++;
     }
 
-    public Joy(String comment){
-        setComment(comment);
-        count++;
-    }
-
-    public Joy(){
-        count++;
+    public void decrementCount(){
+        count--;
     }
 
     public String getFeel(){
-        return "Joy";
+        return "(^ ω ^) Joy";
     }
 }
 

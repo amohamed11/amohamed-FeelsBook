@@ -7,24 +7,21 @@ import java.util.Date;
  */
 
 public class Surprise extends Emotion {
-    private static int count = 0;
-    public Surprise(Date date, String comment){
-        setDate(date);
-        setComment(comment);
+    private static int count;
+    public int getCount(){
+        return count;
+    }
+
+    public void incrementCount(){
         count++;
     }
 
-    public Surprise(String comment){
-        setComment(comment);
-        count++;
-    }
-
-    public Surprise(){
-        count++;
+    public void decrementCount(){
+        count--;
     }
 
     public String getFeel(){
-        return "Surprise";
+        return "(・о・) Surprise";
     }
 }
 

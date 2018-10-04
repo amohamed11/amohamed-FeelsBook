@@ -7,23 +7,20 @@ import java.util.Date;
  */
 
 public class Love extends Emotion {
-    private static int count = 0;
-    public Love(Date date, String comment){
-        setDate(date);
-        setComment(comment);
+    private static int count;
+    public int getCount(){
+        return count;
+    }
+
+    public void incrementCount(){
         count++;
     }
 
-    public Love(String comment){
-        setComment(comment);
-        count++;
-    }
-
-    public Love(){
-        count++;
+    public void decrementCount(){
+        count--;
     }
 
     public String getFeel(){
-        return "Love";
+        return "(ღ˘⌣˘ღ) Love";
     }
 }

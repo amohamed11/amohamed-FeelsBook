@@ -9,19 +9,17 @@ import java.util.Date;
 public abstract class Emotion {
     public Date date = new Date();
     private String comment = "";
-    private static int counter;
 
-    public int getCount(){
-        return counter;
+    public Emotion(Date date, String comment){
+        setDate(date);
+        setComment(comment);
     }
 
-    public void incrementCount(){
-        counter++;
+    public Emotion(String comment){
+        setComment(comment);
     }
 
-    public void decrementCount(){
-        counter = counter - 1;
-    }
+    public Emotion(){};
 
     public void setDate(Date date){
         this.date = date;
@@ -32,18 +30,20 @@ public abstract class Emotion {
     }
 
     public void setComment (String comment){
-        this.comment = comment;
+        if (comment.length() > 100){
+            throw new CommentTooLongException();
+        }else {
+            this.comment = comment;
+        }
     }
 
-    public String getComment(){
-        return this.comment;
-    }
-
-    @Override
     public String toString() {
-        return getFeel() + "\n" + comment + "\n" + date.toString();
+        return getFeel() + " | Count: " + Integer.toString(getCount()) + "\n" + this.date.toString() + " | " +  this.comment;
     }
 
     public abstract String getFeel();
+    public abstract int getCount();
+    public abstract void incrementCount();
+    public abstract void decrementCount();
 
 }

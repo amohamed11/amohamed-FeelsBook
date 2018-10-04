@@ -7,23 +7,20 @@ import java.util.Date;
  */
 
 public class Sad extends Emotion {
-    private static int count = 0;
-    public Sad(Date date, String comment){
-        setDate(date);
-        setComment(comment);
+    private static int count;
+    public int getCount(){
+        return count;
+    }
+
+    public void incrementCount(){
         count++;
     }
 
-    public Sad(String comment){
-        setComment(comment);
-        count++;
-    }
-
-    public Sad(){
-        count++;
+    public void decrementCount(){
+        count--;
     }
 
     public String getFeel(){
-        return "Sad";
+        return "(ಥ﹏ಥ) Sad";
     }
 }

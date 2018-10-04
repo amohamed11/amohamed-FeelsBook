@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">amohamed-FeelsBook</string>
-    <string name="anger">(╬ಠ益ಠ)\n Anger</string>
+    <string name="anger">(╬ಠ益ಠ)\nAnger</string>
     <string name="joy">(^ ω ^)\nJoy</string>
-    <string name="sad">(ﾟДﾟ;)\nSad</string>
+    <string name="sad">(ಥ﹏ಥ)\nSad</string>
     <string name="fear">(⊙＿⊙)\nFear</string>
     <string name="love">(ღ˘⌣˘ღ)\nLove</string>
     <string name="surprise">(・о・)\nSurprise</string>
+    <string name="enterComment">Enter comment. (optional)</string>
+
 </resources>
