@@ -35,11 +35,7 @@ public abstract class Emotion implements Serializable, Comparable<Emotion> {
     }
 
     public void setComment (String comment){
-        if (comment.length() > 100){
-            throw new CommentTooLongException();
-        }else {
-            this.comment = comment;
-        }
+        this.comment = comment;
     }
 
     public String getComment() {

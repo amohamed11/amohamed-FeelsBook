@@ -1,5 +1,27 @@
-package com.example.anas.amohamed_feelsbook;
+/*      MIT License
 
+        Copyright (c) 2018 Anas Mohamed amohamed@ualberta.ca
+
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+*/
+
+package com.example.anas.amohamed_feelsbook;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -112,7 +134,7 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int code, Intent intent) {
+    protected void onActivityResult(int requestCode, int code, Intent intent)  {
         if (requestCode == 2) {
             if(code == RESULT_OK){
                 Emotion updatedEmotion = (Emotion) intent.getSerializableExtra("updateEmotion");
@@ -120,9 +142,14 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
                     try {
                         Date newDate = new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm", Locale.CANADA).parse(updatedEmotion.getDate());
                         emotionList.get(lastPosition).setDate(newDate);
-                        emotionList.get(lastPosition).setComment(updatedEmotion.getComment());
-                        emotionAdapter.notifyDataSetChanged();
-                        saveInFile(emotionList);
+                        if (updatedEmotion.getComment().length() > 100){
+                            enterComment.getText().clear();
+                            enterComment.setHint("Oops, try again. Maximum: 100 Characters.");
+                        }else{
+                            emotionList.get(lastPosition).setComment(updatedEmotion.getComment());
+                            emotionAdapter.notifyDataSetChanged();
+                            saveInFile(emotionList);
+                        }
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -192,73 +219,79 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
 
     //Handles all the button presses
     @Override
-    public void onClick(View v){
+    public void onClick(View v) {
         comment = enterComment.getText().toString();
-        enterComment.getText().clear();
-        switch (v.getId()){
+        if (comment.length() > 100){
+            enterComment.getText().clear();
+            enterComment.setHint("Oops, try again. Maximum: 100 Characters.");
+        }else {
+            enterComment.getText().clear();
+            comment = "";
+            switch (v.getId()) {
 
-            case R.id.fearButton:
-                Fear fear = new Fear();
-                if (!comment.matches("")){
-                    fear.setComment(comment);
-                }
-                emotionList.add(fear);
-                fear.incrementCount();
-                stringCount.set(0, "Fear: " + Integer.toString(fear.getCount()));
-                break;
+                case R.id.fearButton:
+                    Fear fear = new Fear();
+                    if (!comment.matches("")) {
+                        fear.setComment(comment);
+                    }
+                    emotionList.add(fear);
+                    fear.incrementCount();
+                    stringCount.set(0, "Fear: " + Integer.toString(fear.getCount()));
+                    break;
 
-            case R.id.joyButton:
-                Joy joy = new Joy();
-                if (!comment.matches("")){
-                    joy.setComment(comment);
-                }
-                emotionList.add(joy);
-                joy.incrementCount();
-                break;
+                case R.id.joyButton:
+                    Joy joy = new Joy();
+                    if (!comment.matches("")) {
+                        joy.setComment(comment);
+                    }
+                    emotionList.add(joy);
+                    joy.incrementCount();
+                    break;
 
-            case R.id.loveButton:
-                Love love = new Love();
-                if (!comment.matches("")){
-                    love.setComment(comment);
-                }
-                emotionList.add(love);
-                love.incrementCount();
-                break;
+                case R.id.loveButton:
+                    Love love = new Love();
+                    if (!comment.matches("")) {
+                        love.setComment(comment);
+                    }
+                    emotionList.add(love);
+                    love.incrementCount();
+                    break;
 
-            case R.id.angerButton:
-                Anger anger= new Anger();
-                if (!comment.matches("")){
-                    anger.setComment(comment);
-                }
-                emotionList.add(anger);
-                anger.incrementCount();
-                break;
+                case R.id.angerButton:
+                    Anger anger = new Anger();
+                    if (!comment.matches("")) {
+                        anger.setComment(comment);
+                    }
+                    emotionList.add(anger);
+                    anger.incrementCount();
+                    break;
 
-            case R.id.sadButton:
-                Sad sad= new Sad();
-                if (!comment.matches("")){
-                    sad.setComment(comment);
-                }
-                emotionList.add(sad);
-                sad.incrementCount();
-                break;
+                case R.id.sadButton:
+                    Sad sad = new Sad();
+                    if (!comment.matches("")) {
+                        sad.setComment(comment);
+                    }
+                    emotionList.add(sad);
+                    sad.incrementCount();
+                    break;
 
-            case R.id.surpriseButton:
-                Surprise surprise= new Surprise();
-                if (!comment.matches("")){
-                    surprise.setComment(comment);
-                }
-                emotionList.add(surprise);
-                surprise.incrementCount();
-                break;
+                case R.id.surpriseButton:
+                    Surprise surprise = new Surprise();
+                    if (!comment.matches("")) {
+                        surprise.setComment(comment);
+                    }
+                    emotionList.add(surprise);
+                    surprise.incrementCount();
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+            }
+            updateCount();
+            emotionAdapter.notifyDataSetChanged();
+            drawerAdapter.notifyDataSetChanged();
+            saveInFile(emotionList);
         }
-        updateCount();
-        emotionAdapter.notifyDataSetChanged();
-        drawerAdapter.notifyDataSetChanged();
-        saveInFile(emotionList);
     }
 
     @Override

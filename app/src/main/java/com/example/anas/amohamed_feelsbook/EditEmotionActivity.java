@@ -1,6 +1,8 @@
 package com.example.anas.amohamed_feelsbook;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +16,6 @@ import java.util.Date;
 import java.util.Locale;
 
 public class EditEmotionActivity extends Activity {
-    private int year, month, day, hour, second;
     private Date newDate;
     protected TextView emotionText;
     protected TextView editDate;
@@ -42,11 +43,6 @@ public class EditEmotionActivity extends Activity {
         editComment = findViewById(R.id.editComment);;
         editComment.setText(selectedEmotion.getComment());
 
-
-
-        String newComment = editComment.getText().toString();
-        selectedEmotion.setComment(newComment);
-
         // Handles going back after deletion
         deleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
@@ -61,11 +57,16 @@ public class EditEmotionActivity extends Activity {
         // Handles going back after editing the emotion
         saveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
-                selectedEmotion.setComment(editComment.getText().toString());
-                Intent intent = new Intent();
-                intent.putExtra("updateEmotion", selectedEmotion);
-                setResult(RESULT_OK, intent);
-                finish();
+                String newComment = editComment.getText().toString();
+                if (newComment.length() > 100){
+                    editComment.setHint("Oops, try again. Maximum: 100 Characters.");
+                }else {
+                    selectedEmotion.setComment(newComment);
+                    Intent intent = new Intent();
+                    intent.putExtra("updateEmotion", selectedEmotion);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
             }
         });
 
