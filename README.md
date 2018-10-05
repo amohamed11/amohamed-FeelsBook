@@ -3,7 +3,8 @@ https://streamable.com/b92vh
 
 apk -> app/build/outputs/apk/debug/
 
-**Citations:**
+**Citations:**  
+
 Various documentation pages from: https://developer.android.com
 
 All around references for application desgin and methodology

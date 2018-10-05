@@ -50,6 +50,7 @@ public abstract class Emotion implements Serializable, Comparable<Emotion> {
         return getFeel() + "\n" + getDate() + " | " +  this.comment;
     }
 
+    //Used for sorting comparisons
     @Override
     public int compareTo(Emotion emotion) {
         Date otherDate = new Date();
@@ -61,6 +62,8 @@ public abstract class Emotion implements Serializable, Comparable<Emotion> {
         return date.compareTo(otherDate);
     }
 
+
+    // These are for the extended instances to handle
     public abstract String getFeel();
     public abstract int getCount();
     public abstract void incrementCount();

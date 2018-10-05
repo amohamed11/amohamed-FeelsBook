@@ -30,6 +30,7 @@ public class EditDateActivity extends Activity {
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                //After the first button press, swtiches to time input
                 if (saveClicked == 0){
                     day = datePicker.getDayOfMonth();
                     month = datePicker.getMonth();
@@ -45,6 +46,7 @@ public class EditDateActivity extends Activity {
                     hour = timePicker.getHour();
                     minute = timePicker.getMinute();
                     calendar.set(year, month, day, hour, minute);
+                    //After getting all the inputs, sends them back to the previous activity
 
                     Intent intent = new Intent();
                     Date date = calendar.getTime();

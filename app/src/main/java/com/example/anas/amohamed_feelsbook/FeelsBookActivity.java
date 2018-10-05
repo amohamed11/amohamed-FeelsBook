@@ -28,8 +28,6 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class FeelsBookActivity extends Activity implements View.OnClickListener {
-    // https://github.com/amohamed11/lonelyTwitter/blob/f15tuesday/app/src/main/java/ca/ualberta/cs/lonelytwitter/LonelyTwitterActivity.java
-//    private static final String FILENAME = "save.gson";
     private int lastPosition;
     private DrawerLayout drawerLayoutView;
 
@@ -63,7 +61,6 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
 
 
         // Get all the buttons
-        // https://stackoverflow.com/questions/25905086/multiple-buttons-onclicklistener-android
         Button fearButton = (Button) findViewById(R.id.fearButton);
         fearButton.setOnClickListener(this);
         Button joyButton = (Button) findViewById(R.id.joyButton);
@@ -89,6 +86,7 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
             }
         });
 
+        // Switch in and out between the drawer and the list otherwise one of them does not work
         drawerLayoutView.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -140,6 +138,7 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
     }
 
 
+    // Sets the stringCount to the current count of each emotion
     private void updateCount() {
         createCounter();
         Fear fear = new Fear();
@@ -162,6 +161,7 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
 
     }
 
+    //Loads the HashMap from the save into stringCount
     private void reloadCount(){
         Fear fear = new Fear();
         fear.setCount(countSave.get("Fear"));
@@ -178,6 +178,7 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
         updateCount();
     }
 
+
     private void createCounter() {
         stringCount.clear();
         stringCount.add("Fear: 0");
@@ -189,6 +190,7 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
 
     }
 
+    //Handles all the button presses
     @Override
     public void onClick(View v){
         comment = enterComment.getText().toString();
@@ -283,6 +285,7 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
         saveInFile(emotionList);
     }
 
+    //Loads all the saved data
     private void loadFromFile() {
         try {
             this.sharedPref = getSharedPreferences("EmotionList", MODE_PRIVATE);
@@ -303,6 +306,7 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
         }
     }
 
+    // Specifically loads the saved counter
     private void loadCount(){
         try{
             this.sharedPref = getSharedPreferences("counters", MODE_PRIVATE);

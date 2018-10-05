@@ -47,6 +47,7 @@ public class EditEmotionActivity extends Activity {
         String newComment = editComment.getText().toString();
         selectedEmotion.setComment(newComment);
 
+        // Handles going back after deletion
         deleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
                 selectedEmotion.setComment("remove me");
@@ -57,7 +58,7 @@ public class EditEmotionActivity extends Activity {
             }
         });
 
-
+        // Handles going back after editing the emotion
         saveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
                 selectedEmotion.setComment(editComment.getText().toString());
@@ -68,6 +69,7 @@ public class EditEmotionActivity extends Activity {
             }
         });
 
+        //Calls the EditDate activity to handle date and time input
         dateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), EditDateActivity.class);
