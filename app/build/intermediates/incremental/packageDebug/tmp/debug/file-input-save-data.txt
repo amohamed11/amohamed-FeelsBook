@@ -1,0 +1,11 @@
+#Internal package file, do not edit.
+#Fri Oct 05 05:55:40 MDT 2018
+1.base=/home/anas/CS301/amohamed-FeelsBook/app/build/intermediates/transforms/dexMerger/debug/0
+0.baseType=DIRECTORY
+1.baseType=DIRECTORY
+count=2
+1.set=DEX
+0.path=classes.dex
+0.set=DEX
+0.base=/home/anas/CS301/amohamed-FeelsBook/app/build/intermediates/transforms/dexMerger/debug/1
+1.path=classes.dex

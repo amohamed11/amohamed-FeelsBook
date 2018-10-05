@@ -1,0 +1,38 @@
+{
+    "logs": [
+        {
+            "outputFile": "/home/anas/CS301/amohamed-FeelsBook/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "/home/anas/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bd8e251c90369b2f6a883daa7a592591/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "223"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "121",
+                        "endLines": "6",
+                        "endColumns": "12",
+                        "endOffsets": "289"
+                    }
+                },
+                {
+                    "source": "/home/anas/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/8c2e19c068c7ce143e6dc3045dbe3742/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                }
+            ]
+        }
+    ]
+}
