@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class FeelsBookActivity extends Activity implements View.OnClickListener {
@@ -43,6 +44,8 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
     protected ArrayAdapter<String> drawerAdapter;
     public SharedPreferences sharedPref;
     public SharedPreferences.Editor editor;
+
+    private HashMap<String, Integer> countSave = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,44 +142,40 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
 
     private void updateCount() {
         createCounter();
-        for(int i=0; i < emotionList.size(); i++){
-            if (emotionList.get(i) instanceof Fear){
-                stringCount.set(0, "Fear: " + Integer.toString(emotionList.get(i).getCount()));
-                Fear fear = new Fear();
-                fear.setCount(emotionList.get(i).getCount());
-            }
-            if (emotionList.get(i) instanceof Joy){
-                stringCount.set(1, "Joy: " + Integer.toString(emotionList.get(i).getCount()));
-                Joy joy = new Joy();
-                joy.setCount(emotionList.get(i).getCount());
+        Fear fear = new Fear();
+        stringCount.set(0, "Fear: " + Integer.toString(fear.getCount()));
 
-            }
-            if (emotionList.get(i) instanceof Love){
-                stringCount.set(2, "Love: " + Integer.toString(emotionList.get(i).getCount()));
-                Love love = new Love();
-                love.setCount(emotionList.get(i).getCount());
+        Joy joy = new Joy();
+        stringCount.set(1, "Joy: " + Integer.toString(joy.getCount()));
 
-            }
-            if (emotionList.get(i) instanceof Anger){
-                stringCount.set(3, "Anger: " + Integer.toString(emotionList.get(i).getCount()));
-                Anger anger = new Anger();
-                anger.setCount(emotionList.get(i).getCount());
+        Love love = new Love();
+        stringCount.set(2, "Love: " + Integer.toString(love.getCount()));
 
-            }
-            if (emotionList.get(i) instanceof Sad){
-                stringCount.set(4, "Sad: " + Integer.toString(emotionList.get(i).getCount()));
-                Sad sad = new Sad();
-                sad.setCount(emotionList.get(i).getCount());
+        Anger anger = new Anger();
+        stringCount.set(3, "Anger: " + Integer.toString(anger.getCount()));
 
-            }
-            if (emotionList.get(i) instanceof Surprise){
-                stringCount.set(5, "Surprise: " + Integer.toString(emotionList.get(i).getCount()));
-                Surprise surprise = new Surprise();
-                surprise.setCount(emotionList.get(i).getCount());
+        Sad sad = new Sad();
+        stringCount.set(4, "Sad: " + Integer.toString(sad.getCount()));
 
-            }
-        }
-        saveInFile(emotionList);
+        Surprise surprise = new Surprise();
+        stringCount.set(5, "Surprise: " + Integer.toString(surprise.getCount()));
+
+    }
+
+    private void reloadCount(){
+        Fear fear = new Fear();
+        fear.setCount(countSave.get("Fear"));
+        Joy joy = new Joy();
+        joy.setCount(countSave.get("Joy"));
+        Love love = new Love();
+        love.setCount(countSave.get("Love"));
+        Anger anger = new Anger();
+        anger.setCount(countSave.get("Anger"));
+        Sad sad = new Sad();
+        sad.setCount(countSave.get("Sad"));
+        Surprise surprise = new Surprise();
+        surprise.setCount(countSave.get("Surprise"));
+        updateCount();
     }
 
     private void createCounter() {
@@ -294,8 +293,8 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
                 ByteArrayInputStream bi = new ByteArrayInputStream(Base64.decode(savedEmotions, Base64.DEFAULT));
                 ObjectInputStream oi = new ObjectInputStream(bi);
                 emotionList = (ArrayList<Emotion>) oi.readObject();
+                loadCount();
                 Collections.sort(emotionList);
-                updateCount();
             }
         } catch (IOException e){
             e.printStackTrace();
@@ -304,6 +303,57 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
         }
     }
 
+    private void loadCount(){
+        try{
+            this.sharedPref = getSharedPreferences("counters", MODE_PRIVATE);
+            String savedCount= this.sharedPref.getString("count", "");
+            if (savedCount.equals("")) {
+                createCounter();
+                countSave = new HashMap<String, Integer>();
+            } else {
+                ByteArrayInputStream bi = new ByteArrayInputStream(Base64.decode(savedCount, Base64.DEFAULT));
+                ObjectInputStream oi = new ObjectInputStream(bi);
+                countSave = (HashMap<String, Integer>) oi.readObject();
+                reloadCount();
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void saveCount(){
+        try{
+            this.sharedPref = getSharedPreferences("counters", MODE_PRIVATE);
+            editor = this.sharedPref.edit();
+
+            Fear fear = new Fear();
+            countSave.put("Fear", fear.getCount());
+            Joy joy = new Joy();
+            countSave.put("Joy", joy.getCount());
+            Love love = new Love();
+            countSave.put("Love", love.getCount());
+            Anger anger = new Anger();
+            countSave.put("Anger", anger.getCount());
+            Sad sad = new Sad();
+            countSave.put("Sad", sad.getCount());
+            Surprise surprise = new Surprise();
+            countSave.put("Surprise", surprise.getCount());
+
+            ByteArrayOutputStream bo = new ByteArrayOutputStream();
+            ObjectOutputStream oo = new ObjectOutputStream(bo);
+            oo.writeObject(countSave);
+            oo.close();
+            byte bytes[] = bo.toByteArray();
+
+            editor.putString("count", Base64.encodeToString(bytes,Base64.DEFAULT));
+            editor.apply();
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
     private void saveInFile(ArrayList<Emotion> emotions){
         Collections.sort(emotionList);
@@ -314,10 +364,13 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
             ByteArrayOutputStream bo = new ByteArrayOutputStream();
             ObjectOutputStream oo = new ObjectOutputStream(bo);
             oo.writeObject(emotions);
+            oo.close();
             byte bytes[] = bo.toByteArray();
 
             editor.putString("emotions", Base64.encodeToString(bytes,Base64.DEFAULT));
             editor.apply();
+            saveCount();
+
 
         } catch (IOException e){
             e.printStackTrace();

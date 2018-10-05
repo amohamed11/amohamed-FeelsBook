@@ -47,7 +47,7 @@ public abstract class Emotion implements Serializable, Comparable<Emotion> {
     }
 
     public String toString() {
-        return getFeel() + " | Count: " + Integer.toString(getCount()) + "\n" + getDate() + " | " +  this.comment;
+        return getFeel() + "\n" + getDate() + " | " +  this.comment;
     }
 
     @Override
