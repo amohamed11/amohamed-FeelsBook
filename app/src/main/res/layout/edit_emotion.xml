@@ -36,7 +36,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="2dp"
         android:layout_marginTop="29dp"
-        android:textSize="24sp" />
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/editDate"
@@ -46,6 +46,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="-2dp"
         android:layout_marginTop="136dp"
+        android:textSize="12sp"
         android:ems="10" />
 
     <EditText

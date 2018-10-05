@@ -39,6 +39,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -172,6 +173,7 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
 
             }
         }
+        saveInFile(emotionList);
     }
 
     private void createCounter() {
@@ -288,6 +290,7 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
                 ByteArrayInputStream bi = new ByteArrayInputStream(Base64.decode(savedEmotions, Base64.DEFAULT));
                 ObjectInputStream oi = new ObjectInputStream(bi);
                 emotionList = (ArrayList<Emotion>) oi.readObject();
+                Collections.sort(emotionList);
                 updateCount();
             }
         } catch (IOException e){
@@ -299,6 +302,7 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
 
 
     private void saveInFile(ArrayList<Emotion> emotions){
+        Collections.sort(emotionList);
         try {
             this.sharedPref = getSharedPreferences("EmotionList", MODE_PRIVATE);
             editor = this.sharedPref.edit();

@@ -22,8 +22,11 @@ https://blog.teamtreehouse.com/add-navigation-drawer-android
 How to get Intent to return result
 https://stackoverflow.com/questions/10407159/how-to-manage-startactivityforresult-on-android/10407371#10407371
 
-
 DatePicker reference
 https://abhiandroid.com/ui/datepicker
+
+Sorting and ArrayList of Objects
+https://stackoverflow.com/questions/5927109/sort-objects-in-arraylist-by-date
+
 
 
