@@ -13,7 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class EditDate extends Activity {
+public class EditDateActivity extends Activity {
     private int day, month, year, hour, minute, saveClicked = 0;
     Calendar calendar = Calendar.getInstance();
 

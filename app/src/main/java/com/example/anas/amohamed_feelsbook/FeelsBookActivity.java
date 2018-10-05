@@ -1,56 +1,36 @@
 package com.example.anas.amohamed_feelsbook;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Base64;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-
-import static android.provider.Telephony.Mms.Part.FILENAME;
 
 public class FeelsBookActivity extends Activity implements View.OnClickListener {
     // https://github.com/amohamed11/lonelyTwitter/blob/f15tuesday/app/src/main/java/ca/ualberta/cs/lonelytwitter/LonelyTwitterActivity.java
 //    private static final String FILENAME = "save.gson";
     private int lastPosition;
+    private DrawerLayout drawerLayoutView;
 
     protected ListView listView;
     public ArrayList<Emotion> emotionList = new ArrayList<Emotion>();
@@ -72,6 +52,7 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
         createCounter();
 
         drawerView = (ListView) findViewById(R.id.count_bar);
+        drawerLayoutView = (DrawerLayout) findViewById(R.id.drawer_layout);
         listView = (ListView) findViewById(R.id.emotion_list);
 
 
@@ -99,12 +80,34 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 lastPosition = position;
                 Emotion selectedEmotion = (Emotion)listView.getItemAtPosition(position);
-                Intent intent = new Intent(getApplicationContext(), EditEmotion.class);
+                Intent intent = new Intent(getApplicationContext(), EditEmotionActivity.class);
                 intent.putExtra("selected", selectedEmotion);
                 startActivityForResult(intent, 2);
             }
         });
 
+        drawerLayoutView.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                if (slideOffset > 0.7){
+                    drawerLayoutView.bringToFront();
+                }
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                drawerLayoutView.bringToFront();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                listView.bringToFront();
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+            }
+        });
     }
 
     @Override
@@ -263,6 +266,7 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
         loadFromFile();
         emotionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_selectable_list_item, emotionList);
         listView.setAdapter(emotionAdapter);
+        listView.bringToFront();
         drawerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stringCount);
         drawerView.setAdapter(drawerAdapter);
 

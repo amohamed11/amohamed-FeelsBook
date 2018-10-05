@@ -1,26 +1,19 @@
 package com.example.anas.amohamed_feelsbook;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.DialogFragment;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 
-public class EditEmotion extends Activity {
+public class EditEmotionActivity extends Activity {
     private int year, month, day, hour, second;
     private Date newDate;
     protected TextView emotionText;
@@ -77,7 +70,7 @@ public class EditEmotion extends Activity {
 
         dateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), EditDate.class);
+                Intent intent = new Intent(getApplicationContext(), EditDateActivity.class);
                 startActivityForResult(intent, 1);
             }
         });

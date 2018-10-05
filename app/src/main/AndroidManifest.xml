@@ -23,12 +23,12 @@
 
 
         <activity
-            android:name=".EditEmotion"
+            android:name=".EditEmotionActivity"
             android:label="@string/title_editEmotion" >
         </activity>
 
         <activity
-            android:name=".EditDate"
+            android:name=".EditDateActivity"
             android:label="@string/EditDateString">
         </activity>
 
