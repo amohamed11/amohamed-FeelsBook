@@ -1,12 +1,17 @@
 package com.example.anas.amohamed_feelsbook;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,11 +23,15 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
@@ -35,35 +44,33 @@ import static android.provider.Telephony.Mms.Part.FILENAME;
 
 public class FeelsBookActivity extends Activity implements View.OnClickListener {
     // https://github.com/amohamed11/lonelyTwitter/blob/f15tuesday/app/src/main/java/ca/ualberta/cs/lonelytwitter/LonelyTwitterActivity.java
-    private static final String FILENAME = "save";
+//    private static final String FILENAME = "save.gson";
+    private FeelsBookActivity activity = this;
+
     protected ListView listView;
     public ArrayList<Emotion> emotionList = new ArrayList<Emotion>();
     protected ArrayAdapter<Emotion> emotionAdapter;
-    protected EditText editComment;
+    protected EditText enterComment;
     protected String comment = "";
 
     protected ListView drawerView;
-    protected ArrayList<String> stringCount;
+    protected ArrayList<String> stringCount = new ArrayList<>();
     protected ArrayAdapter<String> drawerAdapter;
+    public SharedPreferences sharedPref;
+    public SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feels_book);
-        stringCount = new ArrayList<String>();
+
+        createCounter();
+
         drawerView = (ListView) findViewById(R.id.count_bar);
-
-        stringCount.add("Fear: 0");
-        stringCount.add("Joy: 0");
-        stringCount.add("Love: 0");
-        stringCount.add("Anger: 0");
-        stringCount.add("Sad: 0");
-        stringCount.add("Surprised: 0");
-
-        drawerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, stringCount);
-        drawerView.setAdapter(drawerAdapter);
-
         listView = (ListView) findViewById(R.id.emotion_list);
+
+
+        loadFromFile();
 
 
         // Get all the buttons
@@ -81,14 +88,78 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
         Button surpriseButton = (Button) findViewById(R.id.surpriseButton);
         surpriseButton.setOnClickListener(this);
 
-        editComment = (EditText) findViewById(R.id.editComment);
+        enterComment = (EditText) findViewById(R.id.enterComment);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Emotion selectedEmotion = (Emotion)listView.getItemAtPosition(position);
+                Intent intent = new Intent(activity, EditEmotion.class);
+                intent.putExtra("selected", selectedEmotion);
+                System.out.println(selectedEmotion.getFeel());
+                startActivity(intent);
+            }
+        });
+
+    }
+
+
+    private void updateCount() {
+        createCounter();
+        for(int i=0; i < emotionList.size(); i++){
+            if (emotionList.get(i) instanceof Fear){
+                stringCount.set(0, "Fear: " + Integer.toString(emotionList.get(i).getCount()));
+                Fear fear = new Fear();
+                fear.setCount(emotionList.get(i).getCount());
+            }
+            if (emotionList.get(i) instanceof Joy){
+                stringCount.set(1, "Joy: " + Integer.toString(emotionList.get(i).getCount()));
+                Joy joy = new Joy();
+                joy.setCount(emotionList.get(i).getCount());
+
+            }
+            if (emotionList.get(i) instanceof Love){
+                stringCount.set(2, "Love: " + Integer.toString(emotionList.get(i).getCount()));
+                Love love = new Love();
+                love.setCount(emotionList.get(i).getCount());
+
+            }
+            if (emotionList.get(i) instanceof Anger){
+                stringCount.set(3, "Anger: " + Integer.toString(emotionList.get(i).getCount()));
+                Anger anger = new Anger();
+                anger.setCount(emotionList.get(i).getCount());
+
+            }
+            if (emotionList.get(i) instanceof Sad){
+                stringCount.set(4, "Sad: " + Integer.toString(emotionList.get(i).getCount()));
+                Sad sad = new Sad();
+                sad.setCount(emotionList.get(i).getCount());
+
+            }
+            if (emotionList.get(i) instanceof Surprise){
+                stringCount.set(5, "Surprise: " + Integer.toString(emotionList.get(i).getCount()));
+                Surprise surprise = new Surprise();
+                surprise.setCount(emotionList.get(i).getCount());
+
+            }
+        }
+        System.out.println(stringCount);
+    }
+
+    private void createCounter() {
+        stringCount.clear();
+        stringCount.add("Fear: 0");
+        stringCount.add("Joy: 0" );
+        stringCount.add("Love: 0");
+        stringCount.add("Anger: 0");
+        stringCount.add("Sad: 0");
+        stringCount.add("Surprise: 0");
 
     }
 
     @Override
     public void onClick(View v){
-        comment = editComment.getText().toString();
-        editComment.getText().clear();
+        comment = enterComment.getText().toString();
+        enterComment.getText().clear();
         switch (v.getId()){
 
             case R.id.fearButton:
@@ -156,43 +227,62 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
         }
         emotionAdapter.notifyDataSetChanged();
         drawerAdapter.notifyDataSetChanged();
+        saveInFile(emotionList);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         loadFromFile();
-        emotionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, emotionList);
+        emotionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_selectable_list_item, emotionList);
         listView.setAdapter(emotionAdapter);
+        drawerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stringCount);
+        drawerView.setAdapter(drawerAdapter);
+
     }
 
+    @Override
+    protected void onStop(){
+        super.onStop();
+        saveInFile(emotionList);
+    }
 
     private void loadFromFile() {
         try {
-            FileInputStream fis = openFileInput(FILENAME);
-            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-            Gson gson = new GsonBuilder().create();
-            Type listType =  new TypeToken<ArrayList<Emotion>>() {}.getType();
-            emotionList = gson.fromJson(in, listType);
-        } catch (FileNotFoundException e) {
-            emotionList = new ArrayList<Emotion>();
-        } catch (IOException e) {
+            this.sharedPref = getSharedPreferences("EmotionList", MODE_PRIVATE);
+            String savedEmotions= this.sharedPref.getString("emotions", "");
+            if (savedEmotions.equals("")) {
+                emotionList = new ArrayList<>();
+            } else {
+                ByteArrayInputStream bi = new ByteArrayInputStream(Base64.decode(savedEmotions, Base64.DEFAULT));
+                ObjectInputStream oi = new ObjectInputStream(bi);
+                emotionList = (ArrayList<Emotion>) oi.readObject();
+                updateCount();
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }catch (ClassNotFoundException e){
             e.printStackTrace();
         }
     }
 
-    private void saveInFile() {
+
+    private void saveInFile(ArrayList<Emotion> emotions){
         try {
-            FileOutputStream fos = openFileOutput(FILENAME, MODE_PRIVATE);
-            OutputStreamWriter writer = new OutputStreamWriter(fos);
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(emotionList, writer);
-            writer.flush();
-            fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            this.sharedPref = getSharedPreferences("EmotionList", MODE_PRIVATE);
+            editor = this.sharedPref.edit();
+
+            ByteArrayOutputStream bo = new ByteArrayOutputStream();
+            ObjectOutputStream oo = new ObjectOutputStream(bo);
+            oo.writeObject(emotions);
+            byte bytes[] = bo.toByteArray();
+
+            editor.putString("emotions", Base64.encodeToString(bytes,Base64.DEFAULT));
+            editor.apply();
+
+        } catch (IOException e){
             e.printStackTrace();
         }
+
     }
 }

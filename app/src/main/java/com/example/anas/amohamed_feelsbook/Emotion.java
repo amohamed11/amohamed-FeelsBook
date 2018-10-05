@@ -1,12 +1,13 @@
 package com.example.anas.amohamed_feelsbook;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by anas on 9/28/18.
  */
 
-public abstract class Emotion {
+public abstract class Emotion implements Serializable {
     public Date date = new Date();
     private String comment = "";
 
@@ -35,6 +36,10 @@ public abstract class Emotion {
         }else {
             this.comment = comment;
         }
+    }
+
+    public String getComment() {
+        return this.comment;
     }
 
     public String toString() {

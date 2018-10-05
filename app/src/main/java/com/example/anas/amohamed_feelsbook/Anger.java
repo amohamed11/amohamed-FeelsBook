@@ -12,6 +12,10 @@ public class Anger extends Emotion {
         return count;
     }
 
+    public void setCount(int count){
+        this.count = count;
+    }
+
     public void incrementCount(){
         count++;
     }
