@@ -1,3 +1,8 @@
+Video:
+https://streamable.com/b92vh
+
+apk -> app/build/outputs/apk/debug/
+
 **Citations:**
 Various documentation pages from: https://developer.android.com
 
