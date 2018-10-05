@@ -37,6 +37,7 @@ public class EditEmotion extends Activity {
 
 
         Button saveButton = findViewById(R.id.saveButton);
+        Button deleteButton = findViewById(R.id.deleteButton);
         Button dateButton = findViewById(R.id.dateButton);
 
         emotionText = findViewById(R.id.emotionText);
@@ -52,6 +53,16 @@ public class EditEmotion extends Activity {
 
         String newComment = editComment.getText().toString();
         selectedEmotion.setComment(newComment);
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                selectedEmotion.setComment("remove me");
+                Intent intent = new Intent();
+                intent.putExtra("updateEmotion", selectedEmotion);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
 
 
         saveButton.setOnClickListener(new View.OnClickListener() {

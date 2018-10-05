@@ -111,16 +111,22 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
         if (requestCode == 2) {
             if(code == RESULT_OK){
                 Emotion updatedEmotion = (Emotion) intent.getSerializableExtra("updateEmotion");
-                System.out.println(updatedEmotion.toString());
-                try {
-                    Date newDate = new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm", Locale.CANADA).parse(updatedEmotion.getDate());
-                    emotionList.get(lastPosition).setDate(newDate);
-                    emotionList.get(lastPosition).setComment(updatedEmotion.getComment());
+                if (!updatedEmotion.getComment().equals("remove me")) {
+                    try {
+                        Date newDate = new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm", Locale.CANADA).parse(updatedEmotion.getDate());
+                        emotionList.get(lastPosition).setDate(newDate);
+                        emotionList.get(lastPosition).setComment(updatedEmotion.getComment());
+                        emotionAdapter.notifyDataSetChanged();
+                        saveInFile(emotionList);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    emotionList.get(lastPosition).decrementCount();
+                    updateCount();
+                    emotionList.remove(lastPosition);
                     emotionAdapter.notifyDataSetChanged();
                     saveInFile(emotionList);
-                    System.out.println(emotionList);
-                }catch (ParseException e){
-                    e.printStackTrace();
                 }
             }
         }
@@ -202,7 +208,6 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
                 }
                 emotionList.add(joy);
                 joy.incrementCount();
-                stringCount.set(1, "Joy: " + Integer.toString(joy.getCount()) );
                 break;
 
             case R.id.loveButton:
@@ -212,7 +217,6 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
                 }
                 emotionList.add(love);
                 love.incrementCount();
-                stringCount.set(2, "Love: " + Integer.toString(love.getCount()) );
                 break;
 
             case R.id.angerButton:
@@ -222,7 +226,6 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
                 }
                 emotionList.add(anger);
                 anger.incrementCount();
-                stringCount.set(3, "Anger: " + Integer.toString(anger.getCount()) );
                 break;
 
             case R.id.sadButton:
@@ -232,7 +235,6 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
                 }
                 emotionList.add(sad);
                 sad.incrementCount();
-                stringCount.set(4, "Sad: " + Integer.toString(sad.getCount()) );
                 break;
 
             case R.id.surpriseButton:
@@ -242,12 +244,12 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
                 }
                 emotionList.add(surprise);
                 surprise.incrementCount();
-                stringCount.set(5, "Surprise: " + Integer.toString(surprise.getCount()));
                 break;
 
             default:
                 break;
         }
+        updateCount();
         emotionAdapter.notifyDataSetChanged();
         drawerAdapter.notifyDataSetChanged();
         saveInFile(emotionList);
