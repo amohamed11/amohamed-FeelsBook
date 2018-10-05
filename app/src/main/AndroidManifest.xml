@@ -27,6 +27,11 @@
             android:label="@string/title_editEmotion" >
         </activity>
 
+        <activity
+            android:name=".EditDate"
+            android:label="@string/EditDateString">
+        </activity>
+
     </application>
 
 </manifest>

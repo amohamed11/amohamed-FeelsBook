@@ -35,17 +35,21 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import static android.provider.Telephony.Mms.Part.FILENAME;
 
 public class FeelsBookActivity extends Activity implements View.OnClickListener {
     // https://github.com/amohamed11/lonelyTwitter/blob/f15tuesday/app/src/main/java/ca/ualberta/cs/lonelytwitter/LonelyTwitterActivity.java
 //    private static final String FILENAME = "save.gson";
-    private FeelsBookActivity activity = this;
+    private int lastPosition;
 
     protected ListView listView;
     public ArrayList<Emotion> emotionList = new ArrayList<Emotion>();
@@ -92,14 +96,34 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                lastPosition = position;
                 Emotion selectedEmotion = (Emotion)listView.getItemAtPosition(position);
-                Intent intent = new Intent(activity, EditEmotion.class);
+                Intent intent = new Intent(getApplicationContext(), EditEmotion.class);
                 intent.putExtra("selected", selectedEmotion);
-                System.out.println(selectedEmotion.getFeel());
-                startActivity(intent);
+                startActivityForResult(intent, 2);
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int code, Intent intent) {
+        if (requestCode == 2) {
+            if(code == RESULT_OK){
+                Emotion updatedEmotion = (Emotion) intent.getSerializableExtra("updateEmotion");
+                System.out.println(updatedEmotion.toString());
+                try {
+                    Date newDate = new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm", Locale.CANADA).parse(updatedEmotion.getDate());
+                    emotionList.get(lastPosition).setDate(newDate);
+                    emotionList.get(lastPosition).setComment(updatedEmotion.getComment());
+                    emotionAdapter.notifyDataSetChanged();
+                    saveInFile(emotionList);
+                    System.out.println(emotionList);
+                }catch (ParseException e){
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 
@@ -142,7 +166,6 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
 
             }
         }
-        System.out.println(stringCount);
     }
 
     private void createCounter() {
@@ -239,6 +262,12 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
         drawerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stringCount);
         drawerView.setAdapter(drawerAdapter);
 
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        emotionAdapter.notifyDataSetChanged();
     }
 
     @Override

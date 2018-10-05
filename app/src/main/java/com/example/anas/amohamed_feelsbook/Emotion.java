@@ -1,7 +1,9 @@
 package com.example.anas.amohamed_feelsbook;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by anas on 9/28/18.
@@ -26,8 +28,9 @@ public abstract class Emotion implements Serializable {
         this.date = date;
     }
 
-    public Date getDate(){
-        return this.date;
+    public String getDate(){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd 'at' hh:mm", Locale.CANADA);
+        return df.format(this.date);
     }
 
     public void setComment (String comment){
@@ -43,7 +46,7 @@ public abstract class Emotion implements Serializable {
     }
 
     public String toString() {
-        return getFeel() + " | Count: " + Integer.toString(getCount()) + "\n" + this.date.toString() + " | " +  this.comment;
+        return getFeel() + " | Count: " + Integer.toString(getCount()) + "\n" + getDate() + " | " +  this.comment;
     }
 
     public abstract String getFeel();

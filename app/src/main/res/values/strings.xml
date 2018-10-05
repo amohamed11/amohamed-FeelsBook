@@ -8,8 +8,10 @@
     <string name="surprise">(・о・)\nSurprise</string>
     <string name="enterComment">Enter comment. (optional)</string>
     <string name="SaveEdit">Save</string>
+    <string name="SetTime">Set Date</string>
     <string name="title_editEmotion">Edit Past Emotion</string>>
     <string name="EditDateString">Edit Date</string>
+
 
 
 </resources>
