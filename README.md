@@ -1,14 +1,19 @@
 Video:
 https://streamable.com/b92vh
 
-apk -> app/build/outputs/apk/debug/
+apk -> app/build/outputs/apk/  
+UML -> doc/
 
-**Citations:**  
+**Citations & Acknowledgments:**  
 
 Various documentation pages from: https://developer.android.com
 
 All around references for application desgin and methodology
+Autoher: Joshua Charles Campbell
 https://github.com/joshua2ua/lonelyTwitter/blob/f15tuesday/app/src/main/java/ca/ualberta/cs/lonelytwitter/LonelyTwitterActivity.java
+
+Author: Abram Hindle
+Last: Viewed Oct 5, 2018
 https://www.youtube.com/playlist?list=PL240uJOh_Vb4PtMZ0f7N8ACYkCLv0673O
 
 A method to handle multiple buttons with a switch
@@ -33,7 +38,3 @@ https://abhiandroid.com/ui/datepicker
 
 Sorting and ArrayList of Objects
 https://stackoverflow.com/questions/5927109/sort-objects-in-arraylist-by-date
-
-
-
-
