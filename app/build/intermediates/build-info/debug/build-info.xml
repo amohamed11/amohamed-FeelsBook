@@ -1,42 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <instant-run
-    abi="armeabi-v7a,armeabi"
-    api-level="26"
-    build-mode="HOT_WARM"
-    density="xxhdpi"
+    abi="x86"
+    api-level="27"
+    build-mode="COLD"
+    density="420dpi"
     format="10"
+    ir-eligibility="COMPATIBLE"
     plugin-version="3.2.0"
-    timestamp="1538761779695"
+    timestamp="1538811238718"
     token="5359225472236028070"
-    verifier="COMPATIBLE" >
+    verifier="COLD_SWAP_REQUESTED" >
 
     <task
         name="javac"
-        duration="0" />
+        duration="54" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="0" />
+        duration="13" />
     <task
         name="verifier"
-        duration="0" />
+        duration="12" />
 
     <artifact
-        location="/home/anas/CS301/amohamed-FeelsBook/app/build/intermediates/resources/instant-run/debug/resources-debug.apk"
+        location="/home/anas/CS301/amohamed-FeelsBook/app/build/intermediates/split-apk/debug/slices/slice_0.apk"
         type="SPLIT" />
 
     <build
         build-mode="FULL"
-        timestamp="1538758839145"
+        timestamp="1538810893413"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
             location="/home/anas/CS301/amohamed-FeelsBook/app/build/intermediates/split-apk/debug/slices/slice_0.apk"
             type="SPLIT" />
-        <artifact
-            location="/home/anas/CS301/amohamed-FeelsBook/app/build/intermediates/instant-run-apk/debug/app-debug.apk"
-            type="SPLIT_MAIN" />
         <artifact
             location="/home/anas/CS301/amohamed-FeelsBook/app/build/intermediates/split-apk/debug/slices/slice_6.apk"
             type="SPLIT" />
@@ -70,22 +68,17 @@
         <artifact
             location="/home/anas/CS301/amohamed-FeelsBook/app/build/intermediates/split-apk/debug/dep/dependencies.apk"
             type="SPLIT" />
+        <artifact
+            location="/home/anas/CS301/amohamed-FeelsBook/app/build/intermediates/instant-run-apk/debug/app-debug.apk"
+            type="SPLIT_MAIN" />
     </build>
     <build
         build-mode="COLD"
         ir-eligibility="COMPATIBLE"
-        timestamp="1538761694003"
+        timestamp="1538811238718"
         verifier="COLD_SWAP_REQUESTED" >
         <artifact
             location="/home/anas/CS301/amohamed-FeelsBook/app/build/intermediates/split-apk/debug/slices/slice_0.apk"
-            type="SPLIT" />
-    </build>
-    <build
-        build-mode="HOT_WARM"
-        timestamp="1538761779695"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/anas/CS301/amohamed-FeelsBook/app/build/intermediates/resources/instant-run/debug/resources-debug.apk"
             type="SPLIT" />
     </build>
 

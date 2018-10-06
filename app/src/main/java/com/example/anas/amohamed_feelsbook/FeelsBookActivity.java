@@ -221,67 +221,53 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         comment = enterComment.getText().toString();
+        enterComment.getText().clear();
         if (comment.length() > 100){
-            enterComment.getText().clear();
             enterComment.setHint("Oops, try again. Maximum: 100 Characters.");
-        }else {
-            enterComment.getText().clear();
             comment = "";
+        }
             switch (v.getId()) {
-
                 case R.id.fearButton:
                     Fear fear = new Fear();
-                    if (!comment.matches("")) {
-                        fear.setComment(comment);
-                    }
-                    emotionList.add(fear);
+                    fear.setComment(comment);
                     fear.incrementCount();
-                    stringCount.set(0, "Fear: " + Integer.toString(fear.getCount()));
+                    emotionList.add(fear);
                     break;
 
                 case R.id.joyButton:
                     Joy joy = new Joy();
-                    if (!comment.matches("")) {
-                        joy.setComment(comment);
-                    }
-                    emotionList.add(joy);
+                    joy.setComment(comment);
                     joy.incrementCount();
+                    emotionList.add(joy);
                     break;
 
                 case R.id.loveButton:
                     Love love = new Love();
-                    if (!comment.matches("")) {
-                        love.setComment(comment);
-                    }
-                    emotionList.add(love);
+                    love.setComment(comment);
                     love.incrementCount();
+                    emotionList.add(love);
                     break;
 
                 case R.id.angerButton:
                     Anger anger = new Anger();
-                    if (!comment.matches("")) {
-                        anger.setComment(comment);
-                    }
-                    emotionList.add(anger);
+                    anger.setComment(comment);
                     anger.incrementCount();
+                    emotionList.add(anger);
+
                     break;
 
                 case R.id.sadButton:
                     Sad sad = new Sad();
-                    if (!comment.matches("")) {
-                        sad.setComment(comment);
-                    }
-                    emotionList.add(sad);
+                    sad.setComment(comment);
                     sad.incrementCount();
+                    emotionList.add(sad);
                     break;
 
                 case R.id.surpriseButton:
                     Surprise surprise = new Surprise();
-                    if (!comment.matches("")) {
-                        surprise.setComment(comment);
-                    }
-                    emotionList.add(surprise);
+                    surprise.setComment(comment);
                     surprise.incrementCount();
+                    emotionList.add(surprise);
                     break;
 
                 default:
@@ -291,7 +277,6 @@ public class FeelsBookActivity extends Activity implements View.OnClickListener 
             emotionAdapter.notifyDataSetChanged();
             drawerAdapter.notifyDataSetChanged();
             saveInFile(emotionList);
-        }
     }
 
     @Override

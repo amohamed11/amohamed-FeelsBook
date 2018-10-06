@@ -15,7 +15,7 @@ import java.util.Locale;
 
 public class EditDateActivity extends Activity {
     private int day, month, year, hour, minute, saveClicked = 0;
-    Calendar calendar = Calendar.getInstance();
+    private Calendar calendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState){

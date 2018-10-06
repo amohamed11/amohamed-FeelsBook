@@ -14,11 +14,6 @@ public abstract class Emotion implements Serializable, Comparable<Emotion> {
     public Date date = new Date();
     private String comment = "";
 
-    public Emotion(Date date, String comment){
-        setDate(date);
-        setComment(comment);
-    }
-
     public Emotion(String comment){
         setComment(comment);
     }

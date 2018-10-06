@@ -21,7 +21,7 @@ public class EditEmotionActivity extends Activity {
     protected TextView editDate;
     protected EditText editComment;
 
-    Emotion selectedEmotion;
+    protected Emotion selectedEmotion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

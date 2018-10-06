@@ -928,12 +928,12 @@
         "source": "/home/anas/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bd8e251c90369b2f6a883daa7a592591/res/layout-v26/abc_screen_toolbar.xml"
     },
     {
-        "merged": "/home/anas/CS301/amohamed-FeelsBook/app/build/intermediates/res/merged/debug/drawable-hdpi-v4_abc_ic_star_half_black_16dp.png.flat",
-        "source": "/home/anas/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bd8e251c90369b2f6a883daa7a592591/res/drawable-hdpi-v4/abc_ic_star_half_black_16dp.png"
-    },
-    {
         "merged": "/home/anas/CS301/amohamed-FeelsBook/app/build/intermediates/res/merged/debug/layout_edit_date.xml.flat",
         "source": "/home/anas/CS301/amohamed-FeelsBook/app/src/main/res/layout/edit_date.xml"
+    },
+    {
+        "merged": "/home/anas/CS301/amohamed-FeelsBook/app/build/intermediates/res/merged/debug/drawable-hdpi-v4_abc_ic_star_half_black_16dp.png.flat",
+        "source": "/home/anas/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/bd8e251c90369b2f6a883daa7a592591/res/drawable-hdpi-v4/abc_ic_star_half_black_16dp.png"
     },
     {
         "merged": "/home/anas/CS301/amohamed-FeelsBook/app/build/intermediates/res/merged/debug/drawable-hdpi-v4_abc_btn_switch_to_on_mtrl_00012.9.png.flat",
